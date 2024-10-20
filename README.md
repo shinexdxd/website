@@ -1,1 +1,1 @@
-you can view this code in action at https://mary.bue.rs
+https://mary.bue.rs
