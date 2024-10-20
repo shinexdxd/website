@@ -1,0 +1,187 @@
+/* Importing the fonts */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* General styles for all devices */
+body {
+    background: linear-gradient(135deg, #5c4b8a, #000000); /* Purple to black gradient */
+    background-size: 200% 200%;
+    margin: 0;
+    font-family: 'Poppins', sans-serif; /* Pixel font */
+    color: #fff; /* Default text color */
+}
+
+a:link, a:visited, a:active {
+    color: #ffb347; /* Warm golden accent for links */
+    text-decoration: none;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+#profile-photo {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    border: 4px solid #ffb347; /* Golden border around the profile photo */
+}
+
+
+/* Menu items use the pixel font */
+.menu-item {
+    font-family: 'Architype Stedelijk W00', sans-serif; /* Pixel font */
+    font-size: 26px;
+    text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-bottom: 10px;
+    color: #ffb347; /* Warm golden color for text */
+}
+
+.menu-item:hover {
+    background-color: #5c4b8a; /* Brighter purple on hover */
+    color: #98ff98;
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.grid-item {
+    color: white;
+}
+
+/* Media Queries for responsive design */
+@media (max-width: 1400px) {
+    .modal-content {
+        width: 90%; /* Adjust width for medium devices */
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        max-width:600px;
+    }
+    .close {
+        font-size: 24px; /* Adjust close button size */
+    }
+}
+
+/* Media Query for screens smaller than 800px (Mobile) */
+@media only screen and (max-width: 800px) {
+    .menu-item {
+        font-size: 26px;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #profile-photo {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+.entry {
+    display: flex; /* Use flexbox to align content */
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #fff;
+    min-height: 25px;
+    align-items: center; /* Center items vertically */
+}
+
+.entry-text {
+    flex: 1; /* Allow text to take available space */
+    min-width: 200px; /* Set a minimum width to prevent wrapping */
+    color: black;
+}
+
+.entry-image {
+    align-items:left;
+}
+
+.mood {
+    color: #ff5733; /* Mood color */
+}
+
+.success, .challenge {
+    text-align: left; /* Right-align the text within the centered div */
+    margin: 5px 0; /* Add some spacing */
+    flex-basis: 100%; /* Allow text to take full width */
+    min-width: 420px; /* Ensure sufficient width */
+    color: black;
+    display: flex; /* Use flexbox for alignment */
+}
+
+.load-more {
+    text-align: center;
+    margin: 20px;
+}
+
+/* Simple modal styles */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent dark background */
+}
+
+.modal-content {
+    background-color: rgba(255, 255, 255, 0.5); /* White background with 90% opacity */
+    margin: 5% auto; 
+    padding: 20px; 
+    border: 1px solid #000; 
+    width: 90%; /* Default width for small screens */
+    max-width: 800px; /* Set maximum width */
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Prevent content overflow */
+}
+
+.close {
+    color: #aaa; 
+    float: right; 
+    font-size: 48px; 
+    font-weight: bold; 
+}
+
+.close:hover,
+.close:focus {
+    color: black; 
+    text-decoration: none; 
+    cursor: pointer; 
+}
+
+.disabled {
+    color: darkgrey; /* Change the text color to dark grey */
+    pointer-events: none; /* Prevent any mouse interactions */
+    opacity: 0.6; /* Optionally reduce opacity to indicate it's disabled */
+}
+
+h2 {
+    color: #ffb347;; /* Set text color to black */
+    font-family: 'Architype Stedelijk W00', sans-serif; /* Pixel font */
+    font-size: 26px;
+    letter-spacing: 3px;
+    text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+}

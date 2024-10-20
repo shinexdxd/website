@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shine 🥧 dom 🥧 me</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="stylesheet.css">
+    <link href="https://db.onlinewebfonts.com/c/fbf4b903ab671383e79e189b4e1f356e?family=Architype+Stedelijk+W00" rel="stylesheet"> 
+</head>
+<body bgcolor="#545454">
+
+<div class="container">
+        <img id="profile-photo" src="images/me.jpg" alt="hi there! i'm mary!" title="hi there, i'm mary.">
+        <div id="bio" class="menu-item" title="learn more about me" style="cursor: pointer;">🥧 bio 🥧</div>
+    <a href="https://www.linkedin.com/in/marybuers/" target="new">
+        <div class="menu-item" title="Explore my work experience and connect with me on LinkedIn">👩‍💼 linkedin 👩‍💼</div>
+    </a>
+ <a href="https://www.youtube.com/channel/UCv4XQR5_rPj5qsSU4q9HLbg" target="new"><div id="btsvideos" class="menu-item" title="This is the YouTube I use to showcase my work observing World of Warcraft Esports">
+            🔴 youtube 🔴
+        </div></a>
+       <a href=" https://www.goodreads.com/shinexd " target="new"> <div id="books" class="menu-item" title="Reading is an important way that I learn and grow - check out what I'm currently reading">
+            📚 goodreads 📚
+        </div></a>
+       <a href="https://letterboxd.com/shinedotexe/" target="new"> <div id="movies" class="menu-item" title="Film is another important way I learn and grow - for me, it engenders critical contemplation">
+            📼 letterboxd 📼
+        </div></a>
+    <div id="blog" class="menu-item disabled" title="my microblog - careful, it might have semi-adult content" style="cursor: pointer;">⚠️ blog ⚠️</div> <!-- Disabled initially -->
+</div>
+<!-- Modal Structure -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="modal-body"></div> <!-- This will hold the blog entries or bio -->
+        <button id="load-more" class="menu-item">load more</button> <!-- Load More button -->
+    </div>
+</div>
+
+<script>
+    // Variables to hold modal elements
+    const modal = document.getElementById("modal");
+    const modalBody = document.getElementById("modal-body");
+    const bioLink = document.getElementById("bio");
+    const blogLink = document.getElementById("blog");
+    const closeModal = document.getElementsByClassName("close")[0];
+    const loadMoreButton = document.getElementById("load-more");
+
+    let blogContent = ''; // Variable to hold pre-loaded blog content
+    let displayedEntriesCount = 0; // Count of currently displayed entries
+    const entriesLimit = 5; // Number of entries to display at a time
+    let allEntries = []; // Store all entries for loading more
+
+    // Bio content
+    const bioContent = `
+        <div class="bio-section">
+            <h2>about me</h2>
+            <p>hello, i'm mary.</p>
+               <p>hi there! i’m mary, also known as shine ✨ a curious, creative soul with passion for tech, gaming, and baking.</p><P>when i’m not tinkering with code and finding creative ways to solve problems, you’ll probably find me getting lost in some rpg, or whipping up up a fresh pie 🥧. who can resist the cozy satisfaction of a perfect crust?</p>
+               <p>i’m also a fan of deep conversations. nothing beats a good talk over a cup of tea 🍵.</p><p>let's build something cool together!</p>
+        </div>
+    `;
+
+    // Blog title
+    const blogTitle = `<h2>a teeny tiny blog</h2>`;
+
+    // Function to display bio content
+    bioLink.onclick = () => {
+        modalBody.innerHTML = bioContent; // Load bio content
+        loadMoreButton.style.display = 'none'; // Hide the load more button
+        modal.style.display = "block"; // Show modal
+    };
+
+    // Close modal
+    closeModal.onclick = () => {
+        modal.style.display = "none"; // Hide modal
+    };
+
+    // Close modal when clicking outside
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none"; // Hide modal
+        }
+    };
+
+    // Function to preload blog content
+    async function preloadBlogContent() {
+        try {
+            const response = await fetch('https://notionblog-roan.vercel.app/api/fetch-blog-entries', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            console.log('Fetched data:', data); // Inspect the returned data
+
+            // Process the entries and store them
+            allEntries = data.results.map(entry => {
+                const dateProperty = entry.properties["🗓 Date"]?.date;
+                const title = dateProperty ? new Date(dateProperty.start).toLocaleDateString() : 'untitled';
+                const moodNames = (entry.properties["🌈 I feel"]?.multi_select || []).map(mood => mood.name).join(', ') || 'no mood selected';
+                const successText = entry.properties["👍 Success"]?.rich_text?.[0]?.text?.content || '';
+                const challengeText = entry.properties["👎 Challenge"]?.rich_text?.[0]?.text?.content || '';
+                const hasMedication = entry.properties["💊 Medication "]?.checkbox ? '✔️' : '❌';
+ //               const checkInPic = entry.properties["📷 check-in pic"]?.files?.[0]?.file?.url;
+
+                return `
+                 <div class="entry">
+                        <div class="entry-text">
+                            <h2>${title}</h2>
+                            <p class="mood">🌈: ${moodNames}</p>
+                            <p class="medication">💊: ${hasMedication}</p>
+                        </div>
+                        <div class="entry-image">
+                            ${successText || challengeText ? `<div class="success">👍: ${successText}</div>
+                            <div class="challenge">👎: ${challengeText}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            blogLink.classList.remove('disabled'); // Enable the blog link once content is loaded
+        } catch (error) {
+            console.error('Error preloading blog content:', error);
+            blogContent = '<p>Error loading blog content. Please try again later.</p>'; // Default error message
+            blogLink.classList.remove('disabled'); // Enable the link to show error
+        }
+    }
+
+    // Function to display the next set of entries
+    function displayEntries() {
+        const entriesToDisplay = allEntries.slice(displayedEntriesCount, displayedEntriesCount + entriesLimit);
+        modalBody.innerHTML += entriesToDisplay.join(''); // Append new entries
+        displayedEntriesCount += entriesLimit; // Update the count of displayed entries
+        
+        // Hide the load more button after the first click
+        if (displayedEntriesCount >= entriesLimit) {
+            loadMoreButton.style.display = 'none'; // Hide the load more button
+        } else {
+            loadMoreButton.style.display = displayedEntriesCount < allEntries.length ? 'block' : 'none'; // Show/hide load more button
+        }
+    }
+
+    // Open modal and display blog content
+    blogLink.onclick = () => {
+        const screenWidth = window.innerWidth; // Get the current screen width
+        modalBody.innerHTML = ''; // Clear previous content
+        displayedEntriesCount = 0; // Reset displayed entries count
+
+        if (!blogLink.classList.contains('disabled')) {
+            modal.style.display = "block"; // Show modal
+            modalBody.innerHTML = blogTitle; // Add blog title
+            displayEntries(); // Display the first set of entries
+            loadMoreButton.style.display = 'block'; // Show the load more button
+            console.log('Modal opened:', modal.style.display);
+        } else {
+            console.log('Blog link is disabled'); // Log if link is disabled
+        }
+    };
+
+    // Load more entries when button is clicked
+    loadMoreButton.onclick = displayEntries;
+
+    // Preload blog content on page load
+    preloadBlogContent();
+</script>
+
+<script>
+  var titleText = "shine 💙 dot 💙 cool 💙 ";
+  function scrollTitle() {
+    document.title = titleText;
+    titleText = titleText.substring(1) + titleText.charAt(0);
+    setTimeout(scrollTitle, 200); // Scrolls every 200ms
+  }
+
+  scrollTitle(); // Start scrolling on page load
+</script>
