@@ -34,7 +34,7 @@ a:link, a:visited, a:active {
 
 /* Menu items use the pixel font */
 .menu-item {
-    font-family: 'Architype Stedelijk W00', sans-serif; /* Pixel font */
+    font-family: 'Poppins', sans-serif; /* Pixel font */
     font-size: 26px;
     text-shadow:
         -1px -1px 0 #000,
@@ -47,6 +47,7 @@ a:link, a:visited, a:active {
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
     margin-bottom: 10px;
+    text-transform: uppercase;
     color: #ffb347; /* Warm golden color for text */
 }
 
@@ -54,6 +55,7 @@ a:link, a:visited, a:active {
     background-color: #5c4b8a; /* Brighter purple on hover */
     color: #98ff98;
     transform: scale(1.05); /* Slightly enlarge on hover */
+    font-weight:bold;
 }
 
 .grid-item {
@@ -176,7 +178,7 @@ a:link, a:visited, a:active {
 
 h2 {
     color: #ffb347;; /* Set text color to black */
-    font-family: 'Architype Stedelijk W00', sans-serif; /* Pixel font */
+    font-family: 'Poppins', sans-serif; /* Pixel font */
     font-size: 26px;
     letter-spacing: 3px;
     text-shadow:
